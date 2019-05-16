@@ -1,4 +1,4 @@
-/* cppsrc/main.cpp */
+/* src/main.cc */
 #include <napi.h>
 #include "exporter/exporter.h"
 
