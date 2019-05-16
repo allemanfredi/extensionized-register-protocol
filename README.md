@@ -1,0 +1,1 @@
+# extensionized-register-protocol
