@@ -1,4 +1,4 @@
-#include "Exporter.h"
+#include "exporter.h"
 
 Napi::FunctionReference Exporter::constructor;
 
