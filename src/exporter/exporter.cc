@@ -28,12 +28,14 @@ Napi::Value Exporter::RegisterProtocol(const Napi::CallbackInfo& info) {
   Napi::HandleScope scope(env);
 
   int length = info.Length();
-  if (length != 1 || !info[0].IsString()) {
+  if (length != 3 || !info[0].IsString()) {
     Napi::TypeError::New(env, "Protocol parameter expected").ThrowAsJavaScriptException();
   }
 
   Napi::String protocol = info[0].As<Napi::String>();
-  bool res = this->handler_->registerProtocol(protocol);
+  Napi::String extension_id = info[1].As<Napi::String>();
+  Napi::String extension_name = info[2].As<Napi::String>();
+  bool res = this->handler_->registerProtocol(protocol,extension_id,extension_name);
   return Napi::Boolean::New(env, res);
 }
 

@@ -1,0 +1,6 @@
+{
+ "name": "com.prova.extension",
+ "path": "host.bat",
+ "type":"stdio",
+ "allowed_origins": [ "chrome-extension://12345/"]
+}
