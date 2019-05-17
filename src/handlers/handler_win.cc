@@ -65,13 +65,6 @@ bool Handler::registerProtocol( string  s_protocol , string s_extension_id , str
   lResult = RegCreateKeyEx(HKEY_CURRENT_USER, cmdPath.c_str() , 0, NULL, REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKeyCommand, NULL);
   if ( lResult != ERROR_SUCCESS )
     return false;
-  
-  //devo inserire il path di host.bat
-  lResult = RegSetValueEx(hKeyCommand, L"" , 0 , REG_SZ , (LPBYTE)(L"todo-chrome extension") , ((( (DWORD)lstrlen(L"todo-chrome extension") + 1)) * 2));
-  if ( lResult != ERROR_SUCCESS )
-    return false;
-
-  RegCloseKey(hKeyCommand);
 
   //enable native messaging
   HKEY hKeyNativeMessagging;
@@ -84,18 +77,29 @@ bool Handler::registerProtocol( string  s_protocol , string s_extension_id , str
   std::ofstream outfile ("./executers/win_manifest.json");
   outfile << "{\n \"name\": \"com."<< s_extension_name << ".extension\",\n \"path\": \"host.bat\",\n \"type\":\"stdio\",\n \"allowed_origins\": [ \"chrome-extension://" + s_extension_id + "/\"]\n}" << std::endl;
 
-  
   //set the manifest path to hKeyNativeMessagging
   char buf[4096];
   GetCurrentDirectoryA(4096, buf);
   string currentDir = std::string(buf);
+
+   //set manifest dir into hKeyNativeMessagging
+  string strManifestDir = currentDir + "\\executers\\win_manifest.json";
+  wstring manifestDir(strManifestDir.length(), L' '); 
+  std::copy(strManifestDir.begin(), strManifestDir.end(), manifestDir.begin());
+  lResult = RegSetValueEx(hKeyNativeMessagging, L"" , 0 , REG_SZ , (LPBYTE)(manifestDir.c_str()) , ((((DWORD)lstrlen(manifestDir.c_str()) + 1)) * 2));
+  if ( lResult != ERROR_SUCCESS )
+    return false;
+
+  //set host.bat èath into hKeyCommand
   string strHostDir = currentDir + "\\executers\\host.bat";
   wstring hostDir(strHostDir.length(), L' '); 
   std::copy(strHostDir.begin(), strHostDir.end(), hostDir.begin());
-  
-  lResult = RegSetValueEx(hKeyNativeMessagging, L"" , 0 , REG_SZ , (LPBYTE)(hostDir.c_str()) , ((((DWORD)lstrlen(hostDir.c_str()) + 1)) * 2));
+  lResult = RegSetValueEx(hKeyCommand, L"" , 0 , REG_SZ , (LPBYTE)(hostDir.c_str()) , ((( (DWORD)lstrlen(hostDir.c_str()) + 1)) * 2));
   if ( lResult != ERROR_SUCCESS )
     return false;
+
+  RegCloseKey(hKeyCommand);
+  RegCloseKey(hKeyNativeMessagging);
 
   return true;
 }
