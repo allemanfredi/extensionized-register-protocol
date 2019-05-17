@@ -59,7 +59,6 @@ bool Handler::registerProtocol( string  s_protocol , string s_extension_id , str
   lResult = RegSetValueEx(hKey, L"" , 0 , REG_SZ , (LPBYTE)(url.c_str()) , ((( (DWORD)lstrlen(url.c_str()) + 1)) * 2));
   if ( lResult != ERROR_SUCCESS )
     return false;
-  RegCloseKey(hKey);
   
   HKEY hKeyCommand;
   lResult = RegCreateKeyEx(HKEY_CURRENT_USER, cmdPath.c_str() , 0, NULL, REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKeyCommand, NULL);
@@ -74,7 +73,7 @@ bool Handler::registerProtocol( string  s_protocol , string s_extension_id , str
       return false;
 
   //create manifest file
-  std::ofstream outfile ("./executers/win_manifest.json");
+  std::ofstream outfile ("./executers/win-manifest.json");
   outfile << "{\n \"name\": \"com."<< s_extension_name << ".protocol.handler\",\n \"description\": \"Chrome Native Messaging API protocol handler\",\n \"path\": \"host.bat\",\n \"type\":\"stdio\",\n \"allowed_origins\": [ \"chrome-extension://" + s_extension_id + "/\"]\n}" << std::endl;
 
   //set the manifest path to hKeyNativeMessagging
@@ -83,7 +82,7 @@ bool Handler::registerProtocol( string  s_protocol , string s_extension_id , str
   string currentDir = std::string(buf);
 
    //set manifest dir into hKeyNativeMessagging
-  string strManifestDir = currentDir + "\\executers\\win_manifest.json";
+  string strManifestDir = currentDir + "\\executers\\win-manifest.json";
   wstring manifestDir(strManifestDir.length(), L' '); 
   std::copy(strManifestDir.begin(), strManifestDir.end(), manifestDir.begin());
   lResult = RegSetValueEx(hKeyNativeMessagging, L"" , 0 , REG_SZ , (LPBYTE)(manifestDir.c_str()) , ((((DWORD)lstrlen(manifestDir.c_str()) + 1)) * 2));
@@ -98,6 +97,7 @@ bool Handler::registerProtocol( string  s_protocol , string s_extension_id , str
   if ( lResult != ERROR_SUCCESS )
     return false;
 
+  RegCloseKey(hKey);
   RegCloseKey(hKeyCommand);
   RegCloseKey(hKeyNativeMessagging);
   return true;

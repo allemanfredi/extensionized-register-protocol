@@ -1,2 +1,4 @@
 
-python "host" %*
+@echo off
+
+python "%~dp0/host" %*
