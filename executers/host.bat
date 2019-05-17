@@ -1,2 +1,2 @@
 
-python "%~dp0/host" %*
+python "host" %*

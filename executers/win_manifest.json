@@ -1,6 +1,7 @@
 {
- "name": "com.prova.extension",
+ "name": "com.pegasus.protocol.handler",
+  "description": "Chrome Native Messaging API protocol handler",
  "path": "host.bat",
  "type":"stdio",
- "allowed_origins": [ "chrome-extension://12345/"]
+ "allowed_origins": [ "chrome-extension://haplgpdmjgcjpmjkmfdpabennaajapdj/"]
 }

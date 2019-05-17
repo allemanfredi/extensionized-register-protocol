@@ -68,14 +68,14 @@ bool Handler::registerProtocol( string  s_protocol , string s_extension_id , str
 
   //enable native messaging
   HKEY hKeyNativeMessagging;
-  wstring nativeMessagingPath = L"Software\\Google\\Chrome\\NativeMessagingHosts\\com." + extensionName + L".extension"; 
+  wstring nativeMessagingPath = L"Software\\Google\\Chrome\\NativeMessagingHosts\\com." + extensionName + L".protocol.handler"; 
   lResult = RegCreateKeyEx(HKEY_CURRENT_USER, nativeMessagingPath.c_str() , 0, NULL, REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &hKeyNativeMessagging, NULL);
     if ( lResult != ERROR_SUCCESS )
       return false;
 
   //create manifest file
   std::ofstream outfile ("./executers/win_manifest.json");
-  outfile << "{\n \"name\": \"com."<< s_extension_name << ".extension\",\n \"path\": \"host.bat\",\n \"type\":\"stdio\",\n \"allowed_origins\": [ \"chrome-extension://" + s_extension_id + "/\"]\n}" << std::endl;
+  outfile << "{\n \"name\": \"com."<< s_extension_name << ".protocol.handler\",\n \"description\": \"Chrome Native Messaging API protocol handler\",\n \"path\": \"host.bat\",\n \"type\":\"stdio\",\n \"allowed_origins\": [ \"chrome-extension://" + s_extension_id + "/\"]\n}" << std::endl;
 
   //set the manifest path to hKeyNativeMessagging
   char buf[4096];
@@ -100,7 +100,6 @@ bool Handler::registerProtocol( string  s_protocol , string s_extension_id , str
 
   RegCloseKey(hKeyCommand);
   RegCloseKey(hKeyNativeMessagging);
-
   return true;
 }
 
