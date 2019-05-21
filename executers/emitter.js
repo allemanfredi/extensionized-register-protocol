@@ -14,7 +14,8 @@ ipc.connectTo(
                 ipc.of.host.emit('app.message',
                     {
                         id      : ipc.config.id,
-                        message : 'openExtension'
+                        message : 'openExtension',
+                        url : process.argv[2]
                     }
                 );
                 ipc.disconnect('host');

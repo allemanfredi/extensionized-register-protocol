@@ -90,7 +90,7 @@ bool Handler::registerProtocol( string  s_protocol , string s_extension_id , str
     return false;
 
   //set emitter.bat  into hKeyCommand in order to send the messwage to host.js in order to open the extension
-  string strHostDir = currentDir + "\\executers\\emitter.bat";
+  string strHostDir = "\"" + currentDir + "\\executers\\emitter.bat\""+"\"%1\"";
   wstring hostDir(strHostDir.length(), L' '); 
   std::copy(strHostDir.begin(), strHostDir.end(), hostDir.begin());
   lResult = RegSetValueEx(hKeyCommand, L"" , 0 , REG_SZ , (LPBYTE)(hostDir.c_str()) , ((( (DWORD)lstrlen(hostDir.c_str()) + 1)) * 2));
@@ -100,7 +100,7 @@ bool Handler::registerProtocol( string  s_protocol , string s_extension_id , str
   RegCloseKey(hKey);
   RegCloseKey(hKeyCommand);
   RegCloseKey(hKeyNativeMessagging);
-  
+
   return true;
 }
 
