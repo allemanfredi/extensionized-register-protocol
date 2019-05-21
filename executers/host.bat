@@ -1,4 +1,4 @@
 
 @echo off
 
-python "%~dp0/host" %*
+node "%~dp0/host.js" %*
