@@ -4,7 +4,7 @@ const ipc = require('node-ipc');
 
 
 function handleMessage (req) {
-    sendMessage({message: req})
+    //sendMessage({message: req})
 }
 
 ipc.config.id = 'host';
